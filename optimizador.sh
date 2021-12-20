@@ -1,39 +1,9 @@
 #!/usr/bin/env bash
 ################################################################################
-# This is property of eXtremeSHOK.com
+# This is property of OverloadSolutions.net
 # You are free to use, modify and distribute, however you may not remove this notice.
-# Copyright (c) Adrian Jon Kriel :: admin@extremeshok.com
+# Copyright (c) Arturo Diaz Lora :: adiaz@overloadsolution.net
 ################################################################################
-#
-# Script updates can be found at: https://github.com/extremeshok/xshok-proxmox
-#
-# post-installation script for Proxmox
-#
-# License: BSD (Berkeley Software Distribution)
-#
-################################################################################
-#
-# Version: 2.0
-#
-# Assumptions: proxmox installed
-#
-# Notes:
-# openvswitch will be disabled (removed) when ifupdown2 is enabled
-# ifupdown2 will be disabled (removed) when openvswitch is enabled
-#
-# Docker : not advisable to run docker on the Hypervisor(proxmox) directly.
-# Correct way is to create a VM which will be used exclusively for docker.
-# ie. fresh ubuntu lts server with https://github.com/extremeshok/xshok-docker
-################################################################################
-#
-#    THERE ARE NO USER CONFIGURABLE OPTIONS IN THIS SCRIPT
-#
-################################################################################
-
-#####  T O   S E T   Y O U R   O P T I O N S  ######
-# User Defined Options for (install-post.sh) post-installation script for Proxmox
-# are set in the xs-install-post.env, see the sample : xs-install-post.env.sample
-#####  D O   N O T   E D I T   B E L O W  ######
 
 #### VARIABLES / options
 # Detect AMD EPYC CPU and Apply Fixes
@@ -425,7 +395,7 @@ if [ "$XS_PIGZ" == "yes" ] ; then
     /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' install pigz
     cat  <<EOF > /bin/pigzwrapper
 #!/bin/sh
-# eXtremeSHOK.com
+# OverloadSolutions.net
 PATH=/bin:\$PATH
 GZIP="-1"
 exec /usr/bin/pigz "\$@"
@@ -481,7 +451,7 @@ if [ "$XS_NOSUBBANNER" == "yes" ] ; then
       # create a daily cron to make sure the banner does not re-appear
   cat <<'EOF' > /etc/cron.daily/xs-pve-nosub
 #!/bin/sh
-# eXtremeSHOK.com Remove subscription banner
+# OverloadSolutions.net Remove subscription banner
 sed -i "s/data.status !== 'Active'/false/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 sed -i "s/checked_command: function(orig_cmd) {/checked_command: function() {} || function(orig_cmd) {/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
 EOF
@@ -515,7 +485,7 @@ if [ "$XS_LIMITS" == "yes" ] ; then
     ## Increase max user watches
     # BUG FIX : No space left on device
     cat <<EOF > /etc/sysctl.d/99-xs-maxwatches.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # Increase max user watches
 fs.inotify.max_user_watches=1048576
 fs.inotify.max_user_instances=1048576
@@ -523,7 +493,7 @@ fs.inotify.max_queued_events=1048576
 EOF
     ## Increase max FD limit / ulimit
     cat <<EOF >> /etc/security/limits.d/99-xs-limits.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # Increase max FD limit / ulimit
 * soft     nproc          256000
 * hard     nproc          256000
@@ -536,7 +506,7 @@ root hard     nofile         256000
 EOF
     ## Increase kernel max Key limit
     cat <<EOF > /etc/sysctl.d/99-xs-maxkeys.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # Increase kernel max Key limit
 kernel.keys.root_maxkeys=1000000
 kernel.keys.maxkeys=1000000
@@ -555,7 +525,7 @@ fi
 if [ "$XS_LOGROTATE" == "yes" ] ; then
     ## Optimise logrotate
     cat <<EOF > /etc/logrotate.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 daily
 su root adm
 rotate 7
@@ -573,7 +543,7 @@ fi
 if [ "$XS_JOURNALD" == "yes" ] ; then
     ## Limit the size and optimise journald
     cat <<EOF > /etc/systemd/journald.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 [Journal]
 # Store on disk
 Storage=persistent
@@ -610,7 +580,7 @@ if [ "$XS_ENTROPY" == "yes" ] ; then
     /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' install haveged
     ## Net optimising
     cat <<EOF > /etc/default/haveged
-# eXtremeSHOK.com
+# OverloadSolutions.net
 #   -w sets low entropy watermark (in bits)
 DAEMON_ARGS="-w 1024"
 EOF
@@ -627,7 +597,7 @@ fi
 if [ "$XS_MEMORYFIXES" == "yes" ] ; then
     ## Optimise Memory
 cat <<EOF > /etc/sysctl.d/99-xs-memory.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # Memory Optimising
 ## Bugfix: reserve 512MB memory for system
 vm.min_free_kbytes=524288
@@ -641,7 +611,7 @@ fi
 if [ "$XS_TCPBBR" == "yes" ] ; then
 ## Enable TCP BBR congestion control
 cat <<EOF > /etc/sysctl.d/99-xs-kernel-bbr.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # TCP BBR congestion control
 net.core.default_qdisc=fq
 net.ipv4.tcp_congestion_control=bbr
@@ -651,7 +621,7 @@ fi
 if [ "$XS_TCPFASTOPEN" == "yes" ] ; then
 ## Enable TCP fastopen
 cat <<EOF > /etc/sysctl.d/99-xs-tcp-fastopen.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # TCP fastopen
 net.ipv4.tcp_fastopen=3
 EOF
@@ -660,7 +630,7 @@ fi
 if [ "$XS_NET" == "yes" ] ; then
 ## Enable Network optimising
 cat <<EOF > /etc/sysctl.d/99-xs-net.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 net.core.netdev_max_backlog=8192
 net.core.optmem_max=8192
 net.core.rmem_max=16777216
@@ -711,7 +681,7 @@ fi
 if [ "$XS_SWAPPINESS" == "yes" ] ; then
     ## Bugfix: high swap usage with low memory usage
     cat <<EOF > /etc/sysctl.d/99-xs-swap.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # Bugfix: high swap usage with low memory usage
 vm.swappiness=10
 EOF
@@ -720,7 +690,7 @@ fi
 if [ "$XS_MAXFS" == "yes" ] ; then
     ## Increase Max FS open files
     cat <<EOF > /etc/sysctl.d/99-xs-fs.conf
-# eXtremeSHOK.com
+# OverloadSolutions.net
 # Max FS Optimising
 fs.nr_open=12000000
 fs.file-max=9000000
@@ -764,7 +734,7 @@ if [ "$XS_ZFSARC" == "yes" ] ; then
         MY_ZFS_ARC_MAX=536870912
       fi
       cat <<EOF > /etc/modprobe.d/99-xs-zfsarc.conf
-# eXtremeSHOK.com ZFS tuning
+# OverloadSolutions.net ZFS tuning
 
 # Use 1/16 RAM for MAX cache, 1/8 RAM for MIN cache, or 1GB
 options zfs zfs_arc_min=$MY_ZFS_ARC_MIN
@@ -791,9 +761,9 @@ update-initramfs -u -k all
 /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' autoremove
 /usr/bin/env DEBIAN_FRONTEND=noninteractive apt-get -y -o Dpkg::Options::='--force-confdef' autoclean
 
-echo "# eXtremeSHOK.com" > /etc/extremeshok
+echo "# OverloadSolutions.net" > /etc/extremeshok
 date >> /etc/extremeshok
 
 ## Script Finish
 echo -e '\033[1;33m Finished....please restart the system \033[0m'
-echo "Optimisations by https://eXtremeSHOK.com"
+echo "Optimisations by https://OverloadSolutions.net"
