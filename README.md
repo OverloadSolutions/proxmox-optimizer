@@ -4,11 +4,6 @@ Scripts for working with and optimizing proxmox
 
 ## Maintained and provided by <https://overloadsolutions.net/>
 
-## Optimization / Post Install Script (optimizer.sh aka postinstall.sh) *run once*
-Turns a fresh proxmox install into an optimised proxmox host
-
-'reboot-quick' command which uses kexec to boot the latest kernel, its a fast method of rebooting, without needing to do a hardware reboot
-
 * Disable the enterprise repo, enable the public repo, Add non-free sources
 * Fixes known bugs (public key missing, max user watches, etc)
 * Update the system
