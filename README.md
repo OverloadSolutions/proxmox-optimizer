@@ -1,4 +1,4 @@
-# optimizer-proxmox :: OverloadSolutions.net Proxmox (pve)
+# Optimizer-Proxmox :: OverloadSolutions.net Proxmox (pve)
 
 Scripts for working with and optimizing proxmox
 
@@ -51,3 +51,10 @@ Turns a fresh proxmox install into an optimised proxmox host
 * Optimise ZFS arc size accoring to memory size
 * Install zfs-auto-snapshot
 
+https://raw.githubusercontent.com/OverloadSolutions/proxmox-optimizer/main/optimizador.sh
+
+return value is 0
+
+```
+wget https://raw.githubusercontent.com/OverloadSolutions/proxmox-optimizer/main/optimizador.sh -c -O optimizador.sh && bash optimizador.sh && rm optimizador.sh
+```
